@@ -1,113 +1,61 @@
 #include <stdio.h>
- #include<stdlib.h>
-#define SIZE 20
-#define TRUE 1
-#define FALSE 0
-struct book
+#include <stdlib.h>
+#define max 5
+void insert(int q[],int *r,int item)
 {
-    int book_id;
-    char title[10];
-    char author[10];
-    float price;
-    int no_pages;
-};
-void push(struct book, int *, struct book[]);
-struct book  pop(int *, struct book []);
-struct book peep(int , struct book []);
-void display(int , struct book []);
-int stackfull(int *);
-int stackempty(int *);
-int stackfull(int *tos)
-{
-    if((*tos)==SIZE-1)
-      return TRUE;
-    return FALSE;
-}
-int stackempty(int *tos)
-{
-    if((*tos)==-1)
-      return TRUE;
-    return FALSE;
-}
-
-void push(struct book ele, int *tos, struct book stack[])
-{
-    stack[++(*tos)]=ele;
-}
-
-struct book pop(int *tos, struct book stack[])
-{
-    return stack[(*tos)];
-}
-struct book peep(int tos,struct book stack[])
-{
-    return stack[tos];
-}
-
-void display(int tos, struct book stack[])
-{
-   printf("**************\n");
-   printf("Bppk_Id\t Title\t Author\t Price\t No_pages\n");
-   printf("**************\n");
-   for (int i=tos; i>=0; i--)
+    if(*r==(max-1))
     {
-        printf("%d\t %s\t %s\t %.2f\t %d\n", stack[i].book_id, stack[i].title, stack[i].author, stack[i].price, stack[i].no_pages);
+        printf("Queue full\n");
+        return;
+    }
+    (*r)++;
+    q[*r]=item;
+}
+
+void delet(int q[],int *f,int *r)
+{
+    if(*f>*r)
+    {
+        printf("Queue empty\n");
+        return;
+    }
+    printf("The item deleted is %d\n",q[*f]);
+    (*f)++;
+}
+
+void display(int q[],int f,int r)
+{
+    if(f>r)
+    {
+        printf("Queue empty\n");
+        return;
+    }
+    for(int i=f;i<=r;i++)
+    {
+        printf("%d\t",q[i]);
     }
 }
+
 int main()
 {
-    struct book stack[SIZE], ele;
-    int  choice, item;
-    int top=-1;
-    struct book pop_item, peep_item;
+    int q[max],f=0,r=-1;
+    int ch,item;
     for(;;)
     {
-        printf("\tEnter 1 for push, 2 for pop  3 for pip and 4 for display 5 for exit\n");
-        scanf("%d", &choice);
-        switch(choice)
+        printf("press 1.add\t 2.delete\t 3.display\t 4.exit");
+        printf("\nEnter your choice\n");
+        scanf("%d",&ch);
+        switch(ch)
         {
-            case 1: if(stackfull(&top))
-                      {
-                          printf("The Stack is full\n");
-                          break;
-                      }
-                   printf("Enter the book id title, author name, price and number of pages in order\n");
-                    scanf("%d%s%s%f%d", &ele.book_id, ele.title, ele. author, &ele.price, &ele.no_pages);
-                    push(ele,&top,stack);
-                    break;
-             case 2: if (stackempty(&top))
-                     {
-                          printf(" The stack is empty \n");
-                          break;
-                     }
-                     pop_item=pop(&top, stack);
-                     printf("The detailes of popped record are\n");
-                     printf("%d\t %s\t %s\t %.2f\t %d\n", pop_item.book_id, pop_item.title, pop_item.author, pop_item.price, pop_item.no_pages);
-                     top--;
-                     break;
-            case 3: if (stackempty(&top))
-                     {
-                          printf(" The stack is empty \n");
-                          break;
-                     }
-                     peep_item=peep(top, stack);
-                     printf("The item at the top of the stack is\n");
-                     printf("%d\t %s\t %s\t %.2f\t %d\n", peep_item.book_id, peep_item.title, peep_item.author, peep_item.price, peep_item.no_pages);
-                     break;
-            case 4 : if (stackempty(&top))
-                     {
-                          printf(" The stack is empty \n");
-                          break;
-                     }
-                     printf("The content of the stack are \n");
-                     display(top, stack);
-                     break;
-            case 5:exit(0);
-            default: printf("Enter a valid choice\n");
+            case 1:printf("enter the element to be inserted\n");
+                   scanf("%d",&item);
+                   insert(q,&r,item);
+                   break;
+            case 2:delet(q,&f,&r);
+                   break;
+            case 3:display(q,f,r);
+                   break;
+            case 4: exit(0);
         }
-
-
     }
-
-    return 0;
 }
